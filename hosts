@@ -1,0 +1,2 @@
+[ansible_pull]
+apull01 ansible_ssh_host=ec2-54-221-32-240.compute-1.amazonaws.com
