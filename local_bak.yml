@@ -1,0 +1,13 @@
+---
+- name: Ansible Pull all the things
+  hosts: all
+  
+  tasks:
+    - name: install pip
+      yum: pkg=python-pip state=latest
+
+    - name: install boto
+      pip: name=boto state=latest
+
+    - name: install httpd
+      yum: pkg=httpd state=latest
