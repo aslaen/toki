@@ -2,6 +2,7 @@
 - name: Install packages
   hosts: all
   tasks:
+  sudo: yes
 
   - name: Install packages  
     yum: name={{ item }} state=present
@@ -27,6 +28,9 @@
 
   - name: Create DocumentRoot
     file: path=/home/sites/tokidoki.it/httpdocs/shop owner=ec2-user group=ec2-user mode=0775 state=directory
+  
+  - name: Create ansible config file
+    template: src=ansible.cfg dest=/etc/ansible/ansible.cfg
 
   - name: Copy key
     template: src=toki.pem dest=/home/ec2-user/.ssh/toki.pem owner=ec2-user group=ec2-user mode=0600
