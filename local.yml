@@ -2,8 +2,8 @@
 - name: Install packages
   hosts: all
   vars:
-    rsync_src: "/home/sites/tokidoki.it/shop/"
-    rsync_dst: "/home/sites/tokidoki.it/shop/"
+    rsync_src: "/home/sites/tokidoki.it/httpdocs/shop/"
+    rsync_dst: "/home/sites/tokidoki.it/httpdocs/shop/"
     ssh_key: "toki.pem"
     owner: "ec2-user"
     host: "ip-10-9-158-189.ec2.internal"
