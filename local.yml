@@ -1,8 +1,8 @@
 ---
 - name: Install packages
   hosts: all
-  tasks:
   sudo: yes
+  tasks:
 
   - name: Install packages  
     yum: name={{ item }} state=present
