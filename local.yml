@@ -26,7 +26,7 @@
       - memcached
   
   - name: Create DocumentRoot
-    file: path=/home/sites owner=ec2-user group=ec2-user mode=0775 state=directory recurse=yes
+    file: path=/home/sites/tokidoki.it/httpdocs/shop owner=ec2-user group=ec2-user mode=0775 state=directory recurse=yes
 
   - name: Create ansible config file
     template: src=ansible.cfg dest=/etc/ansible/ansible.cfg
