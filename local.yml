@@ -46,3 +46,6 @@
 
   - name: Restart Apache
     service: name=httpd state=started enabled=true
+
+  - name: Start memcached
+    service: name=memcached state=started enabled=true
