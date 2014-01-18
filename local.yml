@@ -9,10 +9,7 @@
     host: "ip-10-9-158-189.ec2.internal"
   tasks:
 
-  handlers:
-  - name: restart apache
-    service: name=httpd state=restarted enabled=true
-
+  
   - name: Install packages  
     yum: name={{ item }} state=present
     with_items:
@@ -35,6 +32,10 @@
       - php-pecl-apc
       - memcached
   
+  handlers:
+  - name: restart apache
+    service: name=httpd state=restarted enabled=true
+
   - name: Create DocumentRoot
     file: path={{ rsync_src }} owner=ec2-user group=ec2-user mode=0775 state=directory recurse=yes
 
