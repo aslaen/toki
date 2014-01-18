@@ -32,9 +32,6 @@
       - php-pecl-apc
       - memcached
   
-  handlers:
-  - name: restart apache
-    service: name=httpd state=restarted enabled=true
 
   - name: Create DocumentRoot
     file: path={{ rsync_src }} owner=ec2-user group=ec2-user mode=0775 state=directory recurse=yes
@@ -43,7 +40,7 @@
     template: src=ansible.cfg dest=/etc/ansible/ansible.cfg
 
   - name: Copy key
-    template: src={{ ssh_key }} dest=/home/{{ owner }}.ssh/{{ ssh_key }} owner={{ owner }} group={{ owner }} mode=0600
+    template: src={{ ssh_key }} dest=/home/{{ owner }}/.ssh/{{ ssh_key }} owner={{ owner }} group={{ owner }} mode=0600
 
   - name: Sync apache config over
     command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:/etc/httpd/conf* /etc/httpd/
@@ -62,3 +59,7 @@
 
   - name: Start memcached
     service: name=memcached state=started enabled=true
+
+  handlers:
+  - name: restart apache
+    service: name=httpd state=restarted enabled=true
