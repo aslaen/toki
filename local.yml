@@ -48,6 +48,8 @@
 
   - name: Sync apache config over
     command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:/etc/httpd/conf* /etc/httpd/
+  - name: Sync apc module 
+    command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:/usr/share/pear/apc.php /usr/share/pear/apc.php
   
   - name: Sync php config over
     command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:/etc/php* /etc/
