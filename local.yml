@@ -9,6 +9,10 @@
     host: "ip-10-9-158-189.ec2.internal"
   tasks:
 
+  handlers:
+  - name: restart apache
+    service: name=httpd state=restarted enabled=true
+
   - name: Install packages  
     yum: name={{ item }} state=present
     with_items:
@@ -49,12 +53,11 @@
   - name: Sync DocumentRoot
     command: rsync -az --exclude='*session*' --exclude='*cache*' -e "ssh -o StrictHostKeyChecking=no 
       -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner}}@{{ host }}:{{ rsync_src }} {{ rsync_dst}}
+    notify:
+      - restart apache
 
   - name: Set permissions
     file: path=/home/sites owner=ec2-user group=ec2-user mode=0775 state=directory recurse=yes
-
-  - name: Restart Apache
-    service: name=httpd state=started enabled=true
 
   - name: Start memcached
     service: name=memcached state=started enabled=true
