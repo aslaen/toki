@@ -1,7 +1,6 @@
 ---
 - name: Install packages
   hosts: all
-  sudo: yes
   tasks:
 
   - name: Install packages  
