@@ -2,8 +2,8 @@
 - name: Install packages
   hosts: all
   vars:
-    rsync_src: "/home/sites/tokidoki.it/httpdocs/shop/"
-    rsync_dst: "/home/sites/tokidoki.it/httpdocs/shop/"
+    rsync_src: "/home/sites/tokidoki.it/httpdocs/"
+    rsync_dst: "/home/sites/tokidoki.it/httpdocs/"
     ssh_key: "toki.pem"
     owner: "ec2-user"
     host: "ip-10-9-158-189.ec2.internal"
@@ -55,8 +55,8 @@
     command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:/etc/php* /etc/
   
   - name: Sync DocumentRoot
-    command: rsync -az --exclude='*session*' --exclude='*cache*' -e "ssh -o StrictHostKeyChecking=no 
-      -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner}}@{{ host }}:{{ rsync_src }} {{ rsync_dst}}
+    command: rsync -az --exclude='var/*cache*' --exclude='var/*session*' --exclude='*blog*' --exclude='*beta*' --exclude='*files*' --exclude='*shop_*' 
+      -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner}}@{{ host }}:{{ rsync_src }} {{ rsync_dst}}
     notify:
       - restart apache
 
