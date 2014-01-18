@@ -41,7 +41,7 @@
     command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/ec2-user/.ssh/toki.pem" ec2-user@ip-10-9-158-189.ec2.internal:/etc/php* /etc/
   
   - name: Sync DocumentRoot
-    command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/ec2-user/.ssh/toki.pem" ec2-user@ip-10-9-158-189.ec2.internal:/home/sites/tokidoki.it/httpdocs/shop/ /home/sites/tokidoki.it/httpdocs/shop/
+    command: rsync -az --exclude='/home/sites/tokidoki.it/httpdocs/shop/var/session*' --exclude='/home/sites/tokidoki.it/httpdocs/shop/var/cache*' -e "ssh -o StrictHostKeyChecking=no -i /home/ec2-user/.ssh/toki.pem" ec2-user@ip-10-9-158-189.ec2.internal:/home/sites/tokidoki.it/httpdocs/shop/ /home/sites/tokidoki.it/httpdocs/shop/
 
   - name: Set permissions
     file: path=/home/sites owner=ec2-user group=ec2-user mode=0775 state=directory recurse=yes
