@@ -56,15 +56,18 @@
   
   - name: Sync DocumentRoot
     command: rsync -az --exclude='var/*cache*' --exclude='var/*session*' --exclude='*blog*' --exclude='*beta*' --exclude='*files*' --exclude='*shop_*' 
-      -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner}}@{{ host }}:{{ rsync_src }} {{ rsync_dst}}
-    notify:
-      - restart apache
+      -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" root@{{ host }}:{{ rsync_src }} {{ rsync_dst}}
 
   - name: Set permissions
     file: path=/home/sites owner=ec2-user group=ec2-user mode=0775 state=directory recurse=yes
 
   - name: Start memcached
     service: name=memcached state=started enabled=true
+
+  - name: Apache config
+    template: src=httpd.conf dest=/etc/httpd/conf/httpd.conf mode=0644
+    notify:
+      - restart apache
 
   handlers:
   - name: restart apache
