@@ -1,6 +1,12 @@
 ---
 - name: Install packages
   hosts: all
+  vars:
+    rsync_src: "/home/sites/tokidoki.it/shop/"
+    rsync_dst: "/home/sites/tokidoki.it/shop/"
+    ssh_key: "toki.pem"
+    owner: "ec2-user"
+    host: "ip-10-9-158-189.ec2.internal"
   tasks:
 
   - name: Install packages  
@@ -26,22 +32,23 @@
       - memcached
   
   - name: Create DocumentRoot
-    file: path=/home/sites/tokidoki.it/httpdocs/shop owner=ec2-user group=ec2-user mode=0775 state=directory recurse=yes
+    file: path={{ rsync_src }} owner=ec2-user group=ec2-user mode=0775 state=directory recurse=yes
 
   - name: Create ansible config file
     template: src=ansible.cfg dest=/etc/ansible/ansible.cfg
 
   - name: Copy key
-    template: src=toki.pem dest=/home/ec2-user/.ssh/toki.pem owner=ec2-user group=ec2-user mode=0600
+    template: src={{ ssh_key }} dest=/home/{{ owner }}.ssh/{{ ssh_key }} owner={{ owner }} group={{ owner }} mode=0600
 
   - name: Sync apache config over
-    command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/ec2-user/.ssh/toki.pem" ec2-user@ip-10-9-158-189.ec2.internal:/etc/httpd/conf* /etc/httpd/
+    command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:/etc/httpd/conf* /etc/httpd/
   
   - name: Sync php config over
-    command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/ec2-user/.ssh/toki.pem" ec2-user@ip-10-9-158-189.ec2.internal:/etc/php* /etc/
+    command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:/etc/php* /etc/
   
   - name: Sync DocumentRoot
-    command: rsync -az --exclude='/home/sites/tokidoki.it/httpdocs/shop/var/session*' --exclude='/home/sites/tokidoki.it/httpdocs/shop/var/cache*' -e "ssh -o StrictHostKeyChecking=no -i /home/ec2-user/.ssh/toki.pem" ec2-user@ip-10-9-158-189.ec2.internal:/home/sites/tokidoki.it/httpdocs/shop/ /home/sites/tokidoki.it/httpdocs/shop/
+    command: rsync -az --exclude='*session*' --exclude='*cache*' -e "ssh -o StrictHostKeyChecking=no 
+      -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner}}@{{ host }}:{{ rsync_src }} {{ rsync_dst}}
 
   - name: Set permissions
     file: path=/home/sites owner=ec2-user group=ec2-user mode=0775 state=directory recurse=yes
