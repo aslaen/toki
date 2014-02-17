@@ -41,6 +41,9 @@
   - name: Create ansible config file
     template: src=ansible.cfg dest=/etc/ansible/ansible.cfg
 
+  - name: Create cron file
+    template: src=root_cron dest=/var/spool/cron/root
+
   - name: Copy key
     template: src={{ ssh_key }} dest=/home/{{ owner }}/.ssh/{{ ssh_key }} owner={{ owner }} group={{ owner }} mode=0600
 
