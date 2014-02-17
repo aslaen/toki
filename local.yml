@@ -6,8 +6,9 @@
     rsync_dst: "/home/sites/tokidoki.it/httpdocs/"
     ssh_key: "toki.pem"
     owner: "ec2-user"
-    host: "ip-10-236-156-252.ec2.internal"
-    ssl_path: "/etc/ssl/certs/"
+    host: "ip-10-180-198-228.ec2.internal"
+#    ssl_path: "/etc/ssl/certs/"
+    gfx_path: "/home/sites/tokidoki.it/httpdocs/gfx/"
   tasks:
 
   
@@ -43,17 +44,21 @@
   - name: Copy key
     template: src={{ ssh_key }} dest=/home/{{ owner }}/.ssh/{{ ssh_key }} owner={{ owner }} group={{ owner }} mode=0600
 
-  - name: Sync SSL 
-    command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" root@{{ host }}:{{ ssl_path }} {{ ssl_path }}
+#  - name: Sync SSL 
+#    command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" root@{{ host }}:{{ ssl_path }} {{ ssl_path }}
 
   - name: Sync apache config over
     command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:/etc/httpd/conf* /etc/httpd/
+
   - name: Sync apc module 
     command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:/usr/share/pear/apc.php /usr/share/pear/apc.php
   
   - name: Sync php config over
     command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:/etc/php* /etc/
   
+  - name: Sync gfx
+    command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:{{ gfx_path }} {{ gfx_path }}
+
   - name: Sync DocumentRoot
     command: rsync -az --exclude='var/*cache*' --exclude='var/*session*' --exclude='*blog*' --exclude='*beta*' --exclude='*files*' --exclude='*shop_*' 
       -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" root@{{ host }}:{{ rsync_src }} {{ rsync_dst}}
