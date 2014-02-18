@@ -47,9 +47,6 @@
   - name: Copy key
     template: src={{ ssh_key }} dest=/home/{{ owner }}/.ssh/{{ ssh_key }} owner={{ owner }} group={{ owner }} mode=0600
 
-#  - name: Sync SSL 
-#    command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" root@{{ host }}:{{ ssl_path }} {{ ssl_path }}
-
   - name: Sync apache config over
     command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:/etc/httpd/conf* /etc/httpd/
 
@@ -76,6 +73,10 @@
     template: src=httpd.conf dest=/etc/httpd/conf/httpd.conf mode=0644
     notify:
       - restart apache
+
+  - name: Magento index.php
+    template: src=shop_index dest={{ rsync_dst }}/shop/index.php
+
 
   handlers:
   - name: restart apache
