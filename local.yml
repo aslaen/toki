@@ -50,8 +50,8 @@
   - name: Sync apache config over
     command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:/etc/httpd/conf* /etc/httpd/
 
-  - name: Sync apc module 
-    command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:/usr/share/pear/apc.php /usr/share/pear/apc.php
+#  - name: Sync apc module 
+#    command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:/usr/share/pear/apc.php /usr/share/pear/apc.php
   
   - name: Sync php config over
     command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:/etc/php* /etc/
@@ -60,8 +60,15 @@
     command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:{{ gfx_path }} {{ gfx_path }}
 
   - name: Sync DocumentRoot
-    command: rsync -az --exclude='var/*cache*' --exclude='var/*session*' --exclude='*blog*' --exclude='*beta*' --exclude='*files*' --exclude='*shop_*' 
+    command: rsync -az --exclude='var/*cache*' --exclude='var/*session*' 
       -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" root@{{ host }}:{{ rsync_src }} {{ rsync_dst}}
+
+  - name: Create cache dirs
+    file: path={{ rsync_src }}/shop/var/{{ item }} owner=ec2-user group=ec2-user mode=0775 state=directory recurse=yes
+    with_items:
+      - cache
+      - full_page_cache
+      - session
 
   - name: Set permissions
     file: path=/home/sites owner=ec2-user group=ec2-user mode=0775 state=directory recurse=yes
