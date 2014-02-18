@@ -61,7 +61,16 @@ if (!file_exists($mageFilename)) {
     exit;
 }
 
-if (file_exists($maintenanceFile) && !in_array($_SERVER['REMOTE_ADDR'], array('98.189.120.156', '12.192.84.231', '187.233.76.80',  '64.183.32.163','187.234.104.199'))) {
+#####
+# client IP behind LB
+if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR']) {
+    $clientIpAddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+} else {
+    $clientIpAddress = $_SERVER['REMOTE_ADDR'];
+}
+#####
+
+if (file_exists($maintenanceFile) && !in_array($clientIpAddress, array('50.56.228.100', '98.189.120.156', '12.192.84.231', '187.233.76.80',  '64.183.32.163','187.234.104.199'))) {
 header("Location: /maintenance");
     //include_once dirname(__FILE__) . '/errors/503.php';
     exit;
