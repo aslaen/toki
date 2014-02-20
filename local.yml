@@ -31,8 +31,10 @@
       - php-mbstring 
       - php-pear
       - mod_ssl
-      - php-pecl-apc
+     # - php-pecl-apc
       - memcached
+      - telnet
+      - mysql
   
 
   - name: Create DocumentRoot
@@ -77,7 +79,7 @@
     service: name=memcached state=started enabled=true
 
   - name: symlink maintenance dir
-    file: src={{ rsync_dst }}/maintenance dest={{ rsync_dst }}/shop/maintenance owner=ec2-user group=ec2-user mode=0775 state=link recurse=yes
+    file: src={{ rsync_dst }}/maintenance dest={{ rsync_dst }}/shop/maintenance owner=ec2-user group=ec2-user state=link recurse=yes
 
   - name: Apache config
     template: src=httpd.conf dest=/etc/httpd/conf/httpd.conf mode=0644
