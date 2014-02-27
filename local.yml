@@ -62,7 +62,7 @@
     command: rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" {{ owner }}@{{ host }}:{{ gfx_path }} {{ gfx_path }}
 
   - name: Sync DocumentRoot
-    command: rsync -az --exclude='var/*cache*' --exclude='var/*session*' 
+    command: rsync -az --exclude='var/cache' --exclude='var/full_page_cache' --exclude='var/session' 
       -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" root@{{ host }}:{{ rsync_src }} {{ rsync_dst}}
 
   - name: Create cache dirs
