@@ -89,7 +89,7 @@
   - name: Magento index.php
     template: src=shop_index dest={{ rsync_dst }}/shop/index.php
 
-     - name: symlink shop dir
+  - name: symlink shop dir
     file: src={{ rsync_dst }}/shop dest="/root/shop" owner=ec2-user group=ec2-user state=link recurse=yes
 
 
