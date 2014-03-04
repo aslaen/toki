@@ -68,6 +68,7 @@
       - shop
       - maintenance
       - includes 
+      - styles 
 
   - name: Create cache dirs
     file: path={{ rsync_src }}/shop/var/{{ item }} owner=ec2-user group=ec2-user mode=0775 state=directory recurse=yes
