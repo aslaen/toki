@@ -63,7 +63,7 @@
 
   - name: Sync DocumentRoot
     command: rsync -az --exclude='var/cache' --exclude='var/full_page_cache' --exclude='var/session' 
-      -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" root@{{ host }}:{{ rsync_src }}/{{ item }} {{ rsync_dst}}/{{ item }}
+      -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" root@{{ host }}:{{ rsync_src }}/{{ item }} {{ rsync_dst}}
     with_items:
       - shop
       - maintenance
