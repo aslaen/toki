@@ -6,7 +6,7 @@
     rsync_dst: "/home/sites/tokidoki.it/httpdocs/"
     ssh_key: "toki.pem"
     owner: "ec2-user"
-    host: "ip-10-180-198-228.ec2.internal"
+    host: "ec2-54-224-126-116.compute-1.amazonaws.com"
 #    ssl_path: "/etc/ssl/certs/"
     gfx_path: "/home/sites/tokidoki.it/httpdocs/gfx/"
   tasks:
