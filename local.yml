@@ -96,6 +96,9 @@
   - name: symlink shop dir
     file: src={{ rsync_dst }}/shop dest="/root/shop" owner=ec2-user group=ec2-user state=link recurse=yes
 
+  -name: Create check.html
+    command: touch {{ rsync_src }}/shop/check.html
+
 
   handlers:
   - name: restart apache
