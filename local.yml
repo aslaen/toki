@@ -63,7 +63,11 @@
 
   - name: Sync DocumentRoot
     command: rsync -az --exclude='var/cache' --exclude='var/full_page_cache' --exclude='var/session' 
-      -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" root@{{ host }}:{{ rsync_src }} {{ rsync_dst}}
+      -e "ssh -o StrictHostKeyChecking=no -i /home/{{ owner }}/.ssh/{{ ssh_key }}" root@{{ host }}:{{ rsync_src }}/{{ item }} {{ rsync_dst}}/{{ item }}
+    with_items:
+      - shop
+      - maintenance
+      - includes 
 
   - name: Create cache dirs
     file: path={{ rsync_src }}/shop/var/{{ item }} owner=ec2-user group=ec2-user mode=0775 state=directory recurse=yes
