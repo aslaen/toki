@@ -78,7 +78,7 @@
       - session
 
   - name: Set permissions
-    file: path=/home/sites owner=ec2-user group=ec2-user mode=0775 state=directory recurse=yes
+    file: path=/home/sites owner=apache group=apache mode=0775 state=directory recurse=yes
 
   - name: Start memcached
     service: name=memcached state=started enabled=true
