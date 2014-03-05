@@ -1,4 +1,6 @@
 ## cron script for includes and gfx from www.tokidoki.it
-*/5 * * * * /usr/bin/rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/ec2-user/.ssh/toki.pem" root@ec2-184-73-183-135.compute-1.amazonaws.com:/home/sites/tokidoki.it/httpdocs/gfx/ /home/sites/tokidoki.it/httpdocs/gfx/
+*/5 * * * * /usr/bin/rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/ec2-user/.ssh/toki.pem" root@ec2-54-224-126-116.compute-1.amazonaws.com:/home/sites/tokidoki.it/httpdocs/gfx/ /home/sites/tokidoki.it/httpdocs/gfx/
 
 */5 * * * * php /home/sites/tokidoki.it/httpdocs/shop/cron.php
+
+*/5 * * * * /usr/bin/rsync -az -e "ssh -o StrictHostKeyChecking=no -i /home/ec2-user/.ssh/toki.pem" root@ec2-54-224-126-116.compute-1.amazonaws.com:/home/sites/tokidoki.it/httpdocs/shop/var/shared_header/ /home/sites/tokidoki.it/httpdocs/shop/var/shared_header/
